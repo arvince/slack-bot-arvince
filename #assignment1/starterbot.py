@@ -2,7 +2,6 @@ import os
 import time
 import re
 from threading import Timer
-
 from slackclient import SlackClient
 import tweepy
 from tweepy import OAuthHandler
@@ -116,6 +115,35 @@ def output():
 
 t = Timer(86400, output)
 t.start()
+
+def output2():
+    """
+        Executes bot command if the command is known
+    """
+
+    command = "Top Ten trends in Philippines."
+
+    # Default response is help text for the user
+    default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
+
+    # Finds and executes the given command, filling in response
+    response = None
+    # This is where you start to implement more commands!
+    if command.startswith(EXAMPLE_COMMAND):
+        response = "Sure...write some more code then I can do that!"
+    else:
+        response = trending
+
+    # Sends the response back to the channel
+    slack_client.api_call(
+        "chat.postMessage",
+        channel='assignment1',
+        text=response or default_response
+    )
+
+t2 = Timer(86400, output2)
+t2.start()
+
 
 if __name__ == "__main__":
     if slack_client.rtm_connect(with_team_state=False):
