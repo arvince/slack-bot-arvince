@@ -1,12 +1,13 @@
 import os
 import time
 import re
+from threading import Timer
+
 from slackclient import SlackClient
 import tweepy
 from tweepy import OAuthHandler
 import json
-from pprint import pprint
-
+import schedule
 
 # instantiate Slack client
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
@@ -15,22 +16,21 @@ starterbot_id = None
 
 # constants
 RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
-EXAMPLE_COMMAND = "do"
+EXAMPLE_COMMAND = "Show trends"
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 
-consumer_key = 'P6uQYwhVuRrr5m6rU5Rp0oW6c'
-consumer_secret = 'MO0NExDBL13G8GdAQR4MZUB2x9YdiOTaiYJhzlXTktdiA9OhOh'
-access_token = '3393360072-7jz3AOGSofRYJt280RM0ShbRgDraHZtRiJxCSf'
-access_secret = 'jf7rCJfBjoap9RXTArpa9U2yj7ezAmu8bManj5EvVZU'
+consumer_key = 'Pqa4IkRATQIQI5cmeoku9uSmc'
+consumer_secret = 'sQ0RfURq56xQIxU4Zo3EbsMtYuN127YeujlR5aXnznwatkUkYr'
+access_token = '878801066749378560-xxVM1tzuOBSSwlPVYrtEGcpHuPFSWzO'
+access_secret = '51qMwcwcOoBZwQqtWIpIKFOROGgjphpdZTAR80DhvbRwD'
 
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
 
 api = tweepy.API(auth)
 
-# Where On Earth ID for Pasig is 1187115.
-# Where On Earth ID for Worldwide 1.
-WOE_ID = 1
+# Where On Earth ID for Philippines is 1199460.
+WOE_ID = 23424934
 
 trends = api.trends_place(WOE_ID)
 
@@ -38,9 +38,9 @@ trends = json.loads(json.dumps(trends, indent=1))
 
 trendy = []
 for trend in trends[0]["trends"]:
-    trendy.append((trend["name"]))
+    trendy.append(trend["name"])
 
-trending = ', \n'.join(trendy[:10])
+trending = '. \n'.join(trendy[:10])
 
 
 def parse_bot_commands(slack_events):
@@ -56,6 +56,7 @@ def parse_bot_commands(slack_events):
                 return message, event["channel"]
     return None, None
 
+
 def parse_direct_mention(message_text):
     """
         Finds a direct mention (a mention that is at the beginning) in message text
@@ -69,14 +70,16 @@ def handle_command(command, channel):
     """
         Executes bot command if the command is known
     """
+
     # Default response is help text for the user
-    default_response = trending
-    #default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
+    default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
 
     # Finds and executes the given command, filling in response
     response = None
     # This is where you start to implement more commands!
     if command.startswith(EXAMPLE_COMMAND):
+        response = trending
+    else:
         response = "Sure...write some more code then I can do that!"
 
     # Sends the response back to the channel
@@ -85,6 +88,34 @@ def handle_command(command, channel):
         channel=channel,
         text=response or default_response
     )
+
+def output():
+    """
+        Executes bot command if the command is known
+    """
+
+    command = "Top Ten trends in Philippines."
+
+    # Default response is help text for the user
+    default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
+
+    # Finds and executes the given command, filling in response
+    response = None
+    # This is where you start to implement more commands!
+    if command.startswith(EXAMPLE_COMMAND):
+        response = "Sure...write some more code then I can do that!"
+    else:
+        response = trending
+
+    # Sends the response back to the channel
+    slack_client.api_call(
+        "chat.postMessage",
+        channel='general',
+        text=response or default_response
+    )
+
+t = Timer(86400, output)
+t.start()
 
 if __name__ == "__main__":
     if slack_client.rtm_connect(with_team_state=False):
