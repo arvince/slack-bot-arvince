@@ -89,30 +89,36 @@ def output(command, channel):
         text=response or default_response
     )
 
+    threading.Timer(600, output1).start()
+    threading.Timer(600, output2).start()
+
 def output1():
     """
         Executes bot command if the command is known
     """
-    while True:
-        command = "Top Ten trends in Philippines."
 
-        # Default response is help text for the user
-        default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
+    command = "Top Ten trends in Philippines."
 
-        # Finds and executes the given command, filling in response
-        response = None
-        # This is where you start to implement more commands!
-        if command.startswith(EXAMPLE_COMMAND):
-            response = "Sorry, please ask something else."
-        else:
-            response = "Today's top ten trending are: \n"+trending
+    # Default response is help text for the user
+    default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
 
-        # Sends the response back to the channel
-        slack_client.api_call(
-            "chat.postMessage",
-            channel='general',
-            text=response or default_response
-        )
+    # Finds and executes the given command, filling in response
+    response = None
+    # This is where you start to implement more commands!
+    if command.startswith(EXAMPLE_COMMAND):
+        response = "Sorry, please ask something else."
+    else:
+        response = "Today's top ten trending are: \n"+trending
+
+    # Sends the response back to the channel
+    slack_client.api_call(
+        "chat.postMessage",
+        channel='general',
+        text=response or default_response
+    )
+
+    threading.Timer(600, output1).start()
+    threading.Timer(600, output2).start()
 
 #t = Timer(600, output1)
 #t.start()
@@ -123,33 +129,35 @@ def output2():
     """
         Executes bot command if the command is known
     """
-    while True:
 
-        command = "Top Ten trends in Philippines."
+    command = "Top Ten trends in Philippines."
 
-        # Default response is help text for the user
-        default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
+    # Default response is help text for the user
+    default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
 
-        # Finds and executes the given command, filling in response
-        response = None
-        # This is where you start to implement more commands!
-        if command.startswith(EXAMPLE_COMMAND):
-            response = "Sorry, please ask something else."
-        else:
-            response = "Today's top ten trending are: \n"+trending
+    # Finds and executes the given command, filling in response
+    response = None
+    # This is where you start to implement more commands!
+    if command.startswith(EXAMPLE_COMMAND):
+        response = "Sorry, please ask something else."
+    else:
+        response = "Today's top ten trending are: \n"+trending
 
-        # Sends the response back to the channel
-        slack_client.api_call(
-            "chat.postMessage",
-            channel='assignment1',
-            text=response or default_response
-        )
+    # Sends the response back to the channel
+    slack_client.api_call(
+        "chat.postMessage",
+        channel='assignment1',
+        text=response or default_response
+    )
+
+    threading.Timer(600, output1).start()
+    threading.Timer(600, output2).start()
+
 
 #t2 = Timer(600, output2)
 #t2.start()
 #schedule.every(10).minutes.do(output2)
 #threading.Timer(600, output2).start()
-
 
 if __name__ == "__main__":
     if slack_client.rtm_connect(with_team_state=False):
