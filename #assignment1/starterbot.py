@@ -39,7 +39,7 @@ trendy = []
 for trend in trends[0]["trends"]:
     trendy.append(trend["name"])
 
-trending = '. \n'.join(trendy[:10])
+trending = ' \n'.join(trendy[:10])
 
 
 def parse_bot_commands(slack_events):
@@ -65,7 +65,7 @@ def parse_direct_mention(message_text):
     # the first group contains the username, the second group contains the remaining message
     return (matches.group(1), matches.group(2).strip()) if matches else (None, None)
 
-def handle_command(command, channel):
+def output(command, channel):
     """
         Executes bot command if the command is known
     """
@@ -77,9 +77,9 @@ def handle_command(command, channel):
     response = None
     # This is where you start to implement more commands!
     if command.startswith(EXAMPLE_COMMAND):
-        response = trending
+        response = "Today's top ten trending are: \n"+ trending
     else:
-        response = "Sure...write some more code then I can do that!"
+        response = "Sorry, please ask something else."
 
     # Sends the response back to the channel
     slack_client.api_call(
@@ -88,7 +88,7 @@ def handle_command(command, channel):
         text=response or default_response
     )
 
-def output():
+def output1():
     """
         Executes bot command if the command is known
     """
@@ -102,9 +102,9 @@ def output():
     response = None
     # This is where you start to implement more commands!
     if command.startswith(EXAMPLE_COMMAND):
-        response = "Sure...write some more code then I can do that!"
+        response = "Sorry, please ask something else."
     else:
-        response = trending
+        response = "Today's top ten trending are: \n"+trending
 
     # Sends the response back to the channel
     slack_client.api_call(
@@ -113,7 +113,7 @@ def output():
         text=response or default_response
     )
 
-t = Timer(86400, output)
+t = Timer(86400, output1)
 t.start()
 
 def output2():
@@ -130,9 +130,9 @@ def output2():
     response = None
     # This is where you start to implement more commands!
     if command.startswith(EXAMPLE_COMMAND):
-        response = "Sure...write some more code then I can do that!"
+        response = "Sorry, please ask something else."
     else:
-        response = trending
+        response = "Today's top ten trending are: \n"+trending
 
     # Sends the response back to the channel
     slack_client.api_call(
@@ -153,7 +153,7 @@ if __name__ == "__main__":
         while True:
             command, channel = parse_bot_commands(slack_client.rtm_read())
             if command:
-                handle_command(command, channel)
+                output(command, channel)
             time.sleep(RTM_READ_DELAY)
     else:
         print("Connection failed. Exception traceback printed above.")

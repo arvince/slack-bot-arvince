@@ -14,7 +14,7 @@
       <file leaf-file-name="starterbot.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starterbot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="102">
               <caret line="11" selection-start-line="11" selection-end-line="11" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
@@ -41,7 +41,15 @@
       <find>command</find>
       <find>EXAMPLE_COMMAND</find>
       <find>channel</find>
+      <find>slack</find>
+      <find>output</find>
+      <find>handle_command</find>
+      <find>MENTION_REGEX</find>
+      <find>Sure...write some more code then I can do that!</find>
     </findStrings>
+    <replaceStrings>
+      <replace>Sorry, please ask something else.</replace>
+    </replaceStrings>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -67,7 +75,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Course" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -84,6 +91,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Course" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -156,6 +164,16 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/starterbot.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1513">
+          <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/starterbot.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="23" column="56" lean-forward="true" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
           <folding>
@@ -196,7 +214,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/starterbot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="102">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
