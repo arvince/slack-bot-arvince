@@ -1,4 +1,5 @@
 import os
+import threading
 import time
 import re
 from threading import Timer
@@ -28,8 +29,8 @@ auth.set_access_token(access_token, access_secret)
 
 api = tweepy.API(auth)
 
-# Where On Earth ID for Philippines is 1199460.
-WOE_ID = 23424934
+# Where On Earth ID for Global is 1.
+WOE_ID = 1
 
 trends = api.trends_place(WOE_ID)
 
@@ -92,57 +93,62 @@ def output1():
     """
         Executes bot command if the command is known
     """
+    while True:
+        command = "Top Ten trends in Philippines."
 
-    command = "Top Ten trends in Philippines."
+        # Default response is help text for the user
+        default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
 
-    # Default response is help text for the user
-    default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
+        # Finds and executes the given command, filling in response
+        response = None
+        # This is where you start to implement more commands!
+        if command.startswith(EXAMPLE_COMMAND):
+            response = "Sorry, please ask something else."
+        else:
+            response = "Today's top ten trending are: \n"+trending
 
-    # Finds and executes the given command, filling in response
-    response = None
-    # This is where you start to implement more commands!
-    if command.startswith(EXAMPLE_COMMAND):
-        response = "Sorry, please ask something else."
-    else:
-        response = "Today's top ten trending are: \n"+trending
+        # Sends the response back to the channel
+        slack_client.api_call(
+            "chat.postMessage",
+            channel='general',
+            text=response or default_response
+        )
 
-    # Sends the response back to the channel
-    slack_client.api_call(
-        "chat.postMessage",
-        channel='general',
-        text=response or default_response
-    )
-
-t = Timer(86400, output1)
-t.start()
+#t = Timer(600, output1)
+#t.start()
+#schedule.every(10).minutes.do(output1)
+#threading.Timer(600, output1).start()
 
 def output2():
     """
         Executes bot command if the command is known
     """
+    while True:
 
-    command = "Top Ten trends in Philippines."
+        command = "Top Ten trends in Philippines."
 
-    # Default response is help text for the user
-    default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
+        # Default response is help text for the user
+        default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
 
-    # Finds and executes the given command, filling in response
-    response = None
-    # This is where you start to implement more commands!
-    if command.startswith(EXAMPLE_COMMAND):
-        response = "Sorry, please ask something else."
-    else:
-        response = "Today's top ten trending are: \n"+trending
+        # Finds and executes the given command, filling in response
+        response = None
+        # This is where you start to implement more commands!
+        if command.startswith(EXAMPLE_COMMAND):
+            response = "Sorry, please ask something else."
+        else:
+            response = "Today's top ten trending are: \n"+trending
 
-    # Sends the response back to the channel
-    slack_client.api_call(
-        "chat.postMessage",
-        channel='assignment1',
-        text=response or default_response
-    )
+        # Sends the response back to the channel
+        slack_client.api_call(
+            "chat.postMessage",
+            channel='assignment1',
+            text=response or default_response
+        )
 
-t2 = Timer(86400, output2)
-t2.start()
+#t2 = Timer(600, output2)
+#t2.start()
+#schedule.every(10).minutes.do(output2)
+#threading.Timer(600, output2).start()
 
 
 if __name__ == "__main__":
@@ -150,6 +156,8 @@ if __name__ == "__main__":
         print("Starter Bot connected and running!")
         # Read bot's user ID by calling Web API method `auth.test`
         starterbot_id = slack_client.api_call("auth.test")["user_id"]
+        threading.Timer(600, output1).start()
+        threading.Timer(600, output2).start()
         while True:
             command, channel = parse_bot_commands(slack_client.rtm_read())
             if command:
